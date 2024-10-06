@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>learn about Earth</title>
+    <link rel="stylesheet" href="Earth Style.css">
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "jsm/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+			}
+		</script>
+</head>
+
+<body>
+    <div id="loadingScreen">
+        <div class="loader"></div>
+        <p>Loading Our Earth...</p>
+    </div>
+     <button id="spacebutton" onclick="goToPage()">
+        <span>
+            <p>Learn with Sandy</p>
+            <img class="icon" src="assets/sandy.ico" alt="Space icon">
+        </span>
+    </button> 
+     <div id="uiOverlay">
+    <div class="card-container">
+        <div class="profile-card">
+            <div class="card-front">
+                <div class="content">
+                    <h3 id="levelTitle"> Home Earth</h3>
+                    <p id="levelDescription">Earth is the only planet known to support life, with diverse environments like oceans, mountains, and forests. About 71% of its surface is covered by water, which is essential for all living things. Our atmosphere provides oxygen and protects us from harmful solar radiation, making Earth a unique and vibrant home!.
+                    </p>
+                </div>
+            </div>
+        </div> 
+        <script type="module" src="index.js"></script>
+        <script>
+            function goToPage() {
+                window.location.href = "../../learn/main.html";
+            }
+
+            function fadeInButton() {
+                const button = document.getElementById('spacebutton');
+                button.style.opacity = '1';
+            }
+
+            window.addEventListener('load', function () {
+                setTimeout(fadeInButton, 1000); // Delay of 1 second before fading in
+            });
+            function hideLoadingScreen() {
+                document.getElementById('loadingScreen').style.display = 'none';
+            }
+        </script>
+</body>
+
+</html>
