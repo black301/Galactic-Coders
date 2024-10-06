@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Adventure</title>
+    <link rel="shortcut icon" type="x-icon" href="./textures/planet-earth.png">
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+            "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
+          }
+        }
+    </script>
+</head>
+<body>
+    <nav id="planetMenu">
+        <button class="planet-button" data-planet="SolarSystem">
+            <img src="images/solar-system-2.png" alt="SolarSystem">
+            SolarSystem
+        </button>
+        <button class="planet-button" data-planet="Mercury">
+            <img src="images/mercury.png" alt="Mercury">
+            Mercury
+        </button>
+        <button class="planet-button" data-planet="Venus">
+            <img src="images/venus.png" alt="Venus">
+            Venus
+        </button>
+        <button class="planet-button" data-planet="Earth">
+            <img src="images/planet-earth2.png" alt="Earth">
+            Earth
+        </button>
+        <button class="planet-button" data-planet="Mars">
+            <img src="images/mars.png" alt="Mars">
+            Mars
+        </button>
+        <button class="planet-button" data-planet="Jupiter">
+            <img src="images/jupiter.png" alt="Jupiter">
+            Jupiter
+        </button>
+        <button class="planet-button" data-planet="Saturn">
+            <img src="images/saturn.png" alt="Saturn">
+            Saturn
+        </button>
+        <button class="planet-button" data-planet="Uranus">
+            <img src="images/uranus.png" alt="Uranus">
+            Uranus
+        </button>
+        <button class="planet-button" data-planet="Neptune">
+            <img src="images/neptune.png" alt="Neptune">
+            Neptune
+        </button>
+    </nav>
+
+    <div id="loadingScreen">
+        <img class="loading-image" src="./images/sandy load.png" alt="Sandy on Earth">
+        <button id="startButton">Let's Explore 🚀</button>
+        <div id="loadingBar">
+            <div id="loadingProgress"></div>
+        </div>
+        <video id="introVideo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+            <source src="./video/ved.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    </div>
+    <div id="solarSystem">
+    </div>
+
+    <div id="uiOverlay">
+        <button id="spacebutton" onclick="goToPage()">
+            <span>
+                  <p>Learn about NEOs</p><img class = "icon" src = "images/sandy.ico">
+                
+            </span>
+        </button>
+
+        <div class="card-container">
+            <!-- Mercury Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Mercury</h2>
+                    <div class="image">
+                        <img src="images/mercury.png" alt="Mercury" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Mercury is the smallest planet in our Solar System and the closest to the Sun. Its surface is heavily cratered, similar to Earth's Moon.</p>
+                        <p>Despite being the closest planet to the Sun, Mercury is not the hottest planet - that title belongs to Venus. Mercury's temperatures swing wildly between extreme heat and cold.</p>
+                        <p>A year on Mercury (one orbit around the Sun) takes just 88 Earth days, but a single Mercury day lasts about 176 Earth days.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Venus Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Venus</h2>
+                    <div class="image">
+                        <img src="images/venus.png" alt="Venus" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Venus is often called Earth's twin due to their similar size, but it's a hostile world with a thick atmosphere of carbon dioxide and sulfuric acid clouds.</p>
+                        <p>It's the hottest planet in our Solar System, with surface temperatures hot enough to melt lead. This is due to an extreme greenhouse effect.</p>
+                        <p>Venus rotates backwards compared to most other planets, and its day is longer than its year!</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Earth Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Earth</h2>
+                    <div class="image">
+                        <img src="images/planet-earth2.png" alt="Earth" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Earth is our home planet and the only known world that supports life. It's the third planet from the Sun and the largest of the rocky planets.</p>
+                        <p>Our planet's unique atmosphere, liquid water, and magnetic field make it perfectly suited for life as we know it.</p>
+                        <p>Earth is accompanied by one natural satellite, the Moon, which influences our tides and helps stabilize our climate.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Mars Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Mars</h2>
+                    <div class="image">
+                        <img src="images/mars.png" alt="Mars" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Mars is known as the Red Planet due to iron oxide (rust) on its surface. It's home to both the highest mountain and the deepest canyon in the Solar System.</p>
+                        <p>Scientists have found evidence of ancient rivers and lakes on Mars, suggesting it once had liquid water on its surface.</p>
+                        <p>Mars has two small moons, Phobos and Deimos, and is a prime target for future human exploration.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Jupiter Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Jupiter</h2>
+                    <div class="image">
+                        <img src="images/jupiter.png" alt="Jupiter" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Jupiter is the largest planet in our Solar System and the first of the gas giants. Its Great Red Spot is a giant storm that has been raging for hundreds of years.</p>
+                        <p>With at least 79 moons, Jupiter has the most satellites of any planet in our Solar System. The four largest, called the Galilean moons, are Io, Europa, Ganymede, and Callisto.</p>
+                        <p>Jupiter's powerful magnetic field is the strongest of all the planets, creating intense radiation belts.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Saturn Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Saturn</h2>
+                    <div class="image">
+                        <img src="images/saturn.png" alt="Saturn" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Saturn is famous for its spectacular ring system, composed mainly of ice particles, rocky debris, and dust. Despite their vast size, the rings are incredibly thin.</p>
+                        <p>Like Jupiter, Saturn is a gas giant, primarily composed of hydrogen and helium. It's the only planet less dense than water - it would float in a giant bathtub!</p>
+                        <p>Saturn has 82 confirmed moons, with Titan being the largest and most intriguing due to its thick atmosphere and liquid methane lakes.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Uranus Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Uranus</h2>
+                    <div class="image">
+                        <img src="images/uranus.png" alt="Uranus" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Uranus is an ice giant planet that uniquely rotates on its side, likely due to a massive impact early in its history. This gives it extreme seasons lasting decades.</p>
+                        <p>The planet's blue-green color comes from methane in its atmosphere, which absorbs red light and reflects blue-green light.</p>
+                        <p>Uranus has 27 known moons, all named after characters from the works of William Shakespeare and Alexander Pope.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Neptune Card -->
+            <div class="profile-card">
+                <div class="card-front">
+                    <h2 class="card-title">Neptune</h2>
+                    <div class="image">
+                        <img src="images/neptune.png" alt="Neptune" class="profile-img" />
+                    </div>
+                    <div class="content">
+                        <p>Neptune is the windiest planet in our Solar System, with speeds reaching 1,200 mph. Its dark spots are giant storms similar to Jupiter's Great Red Spot.</p>
+                        <p>Like Uranus, Neptune is an ice giant, composed mainly of water, ammonia, and methane ices beneath its atmosphere.</p>
+                        <p>Neptune has 14 known moons, with Triton being the largest. Triton orbits backwards compared to Neptune's rotation and is likely a captured dwarf planet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script type="module" src="index.js"></script>
+    <script>
+        function goToPage() {
+            window.location.href = "./Earth learn/index.html";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const card = document.querySelector('.profile-card');
+            const flipButton = document.getElementById('flipButton');
+            const flipBackButton = document.getElementById('flipBackButton');
+
+            // flipButton.addEventListener('click', () => {
+            //     card.classList.add('is-flipped');
+            // });
+
+            // flipBackButton.addEventListener('click', () => {
+            //     card.classList.remove('is-flipped');
+            // });
+        });
+    </script>
+</body>
+</html>
