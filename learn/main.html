@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Adventure</title>
+    <link rel="shortcut icon" type="x-icon" href="./textures/planet-earth.png">
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+            "jsm/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
+          }
+        }
+    </script>
+    
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loader"></div>
+        <p>Loading Solar System Adventure...</p>
+    </div>
+
+    <nav id="planetMenu">
+        <button class="level locked" data-level="1" aria-label="Mercury Level" disabled>Mercury</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="2" aria-label="Venus Level" disabled>Venus</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="3" aria-label="Earth Level" disabled>Earth</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="4" aria-label="Mars Level" disabled>Mars</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="5" aria-label="Jupiter Level" disabled>Jupiter</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="6" aria-label="Saturn Level" disabled>Saturn</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="7" aria-label="Uranus Level" disabled>Uranus</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <button class="level locked" data-level="8" aria-label="Neptune Level" disabled>Neptune</button>
+    </nav>
+
+    <div id="uiOverlay">
+        <div class="card-container">
+            <div class="profile-card">
+                <div class="card-front">
+                    <div class="content">
+                        <h3 id="levelTitle">Solar System Adventure</h3>
+                        <p id="levelDescription">🌌 Hello, Space Explorer! 🌌 Prepare to embark on an exhilarating journey through our solar system! Dive into the mysteries of planets, uncover captivating facts, and experience breathtaking visuals that make the wonders of space come alive. Buckle up—your cosmic adventure starts now! 🚀✨
+                        </p>
+                    </div>
+                    <button class="arrow" id="arrow" aria-label="Start exploration">Start Exploration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="index.js"></script>
+    <script>
+        const levels = document.querySelectorAll('.level');
+        const progressBars = document.querySelectorAll('.progress-bar');
+        const arrow = document.getElementById('arrow');
+        const levelTitle = document.getElementById('levelTitle');
+        const levelDescription = document.getElementById('levelDescription');
+
+        let currentLevel = 0;
+        let audio = new Audio();
+
+        const levelInfo = {
+            1: { title: "Mercury", soundLocation: "../sound/Mercury.mp3", description: "First up is Mercury! It's the smallest planet and the closest to the Sun. Mercury is super hot during the day and really cold at night, kind of like a giant oven that cools down quickly. It has no moons and looks a lot like our Moon, with lots of craters." },
+            2: { title: "Venus", soundLocation: "../sound/Venus.mp3", description: "Next is Venus, often called Earth's sister because they're similar in size. But Venus is much hotter—like a giant greenhouse! It has thick, cloudy skies made of acid, and it spins slowly, making its day longer than its year."},
+            3: { title: "Earth", soundLocation: "../sound/Earth.mp3", description: "Earth is the only planet known to support life, with diverse environments like oceans, mountains, and forests. About 71% of its surface is covered by water, which is essential for all living things. Our atmosphere provides oxygen and protects us from harmful solar radiation, making Earth a unique and vibrant home!" },
+            4: { title: "Mars", soundLocation: "../sound/Mars.mp3", description: "Say hello to Mars, the Red Planet! It gets its color from rusty iron in the ground. Mars has the biggest volcano in the solar system and two tiny moons. Scientists think it might have had water long ago, which makes it super interesting!" },
+            5: { title: "Jupiter", soundLocation: "../sound/Jupiter.mp3", description: "Next is Jupiter, the biggest planet of them all! It's a giant ball of gas with a huge storm called the Great Red Spot—it's even bigger than Earth! Jupiter has many moons, more than 67, and some are really cool!" },
+            6: { title: "Saturn", soundLocation: "../sound/Saturn.mp3", description: "Here comes Saturn, famous for its beautiful rings made of ice and rock. It's also a gas giant like Jupiter. Saturn has lots of moons too, including Titan, which has lakes of liquid methane—how strange!" },
+            7: { title: "Uranus", soundLocation: "../sound/Uranus.mp3", description: "Now we meet Uranus, the ice giant that looks blue because of methane in its atmosphere. What makes Uranus special is that it spins on its side! It also has a few rings and 27 moons dancing around it." },
+            8: { title: "Neptune", soundLocation: "../sound/Neptune.mp3", description: "Finally, we have Neptune, the farthest planet from the Sun. It's deep blue and known for strong winds and big storms. One of its moons, Triton, is very interesting because it's active and has geysers shooting out!" }
+        };
+
+        function updateLevelInfo(level) {
+            const info = levelInfo[level];
+            levelTitle.textContent = info.title;
+            levelDescription.textContent = info.description;
+        }
+
+        function animateProgressBar(index) {
+            return new Promise((resolve) => {
+                const progress = progressBars[index].querySelector('.progress');
+                progress.style.width = '100%';
+                setTimeout(resolve, 300);
+            });
+        }
+        
+        async function unlockNextLevel() {
+            arrow.disabled = true;
+            if (currentLevel < levels.length) {
+                arrow.disabled = true;
+                if (currentLevel > 0) {
+                    await animateProgressBar(currentLevel - 1);
+                }
+
+                currentLevel++;
+                levels[currentLevel - 1].classList.remove('locked');
+                levels[currentLevel - 1].removeAttribute('disabled');
+                updateLevelInfo(currentLevel);
+
+                // Play the planet sound
+                playPlanetSound(currentLevel);
+
+                if (currentLevel === 1) {
+                    arrow.textContent = "Next Planet";
+                }
+                if (currentLevel === 8) {
+                    arrow.textContent = "Finish";
+                }
+                
+            } else {
+                animateCongratsCard(); // Add this line to trigger the animation
+            }
+            setTimeout(() => {
+                arrow.disabled = false;
+            }, 2500);
+        }
+
+        function playPlanetSound(level) {
+            const soundLocation = levelInfo[level].soundLocation;
+            audio.src = soundLocation;
+            audio.play();
+        }
+
+        arrow.addEventListener('click', unlockNextLevel);
+
+        levels.forEach(level => {
+            level.addEventListener('click', () => {
+                const levelNumber = parseInt(level.getAttribute('data-level'));
+                if (levelNumber <= currentLevel) {
+                    updateLevelInfo(levelNumber);
+                    playPlanetSound(levelNumber);
+                }
+            });
+        });
+
+        updateLevelInfo(0);
+
+        // Function to hide loading screen
+        function hideLoadingScreen() {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }
+    </script>
+    <script src="index.js"></script>
+</body>
+
+</html>
