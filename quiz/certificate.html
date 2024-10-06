@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Coders: Solar System Adventure</title>
+    <link rel="shortcut icon"type="x-icon" href="./textures/planet-earth.png">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.5); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+        }
+
+        .space-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .space-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #spacebutton {
+            position: absolute;
+            top: 80px;
+            right: 00px;
+            width:235px;
+            height:50px;
+            padding: 0px 10px;
+            background: transparent;
+            color: #e6f3ff;
+            font-size: 15px;
+            text-transform: none;
+            letter-spacing: 0px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+            box-shadow:none;
+            overflow: hidden;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            z-index: 1001; 
+        }
+
+        #spacebutton:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 30px #4fc3f7;
+        }
+
+        #spacebutton::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(135, 206, 250, 0.3) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        #spacebutton:hover::before {
+            transform: scale(1);
+        }
+
+        #spacebutton span {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: left;
+        }
+        #spacebutton .span p{
+            font-size: 100px;
+        } 
+        #spacebutton .icon {
+            width: 60px;
+            height: 50px;
+            margin-right: 0px;
+            transition: transform 0.3s ease;
+        }
+
+        #spacebutton:hover .icon {
+            transform: rotate(15deg);
+            }
+
+        @keyframes twinkle {
+            0%,100% {opacity: 1;}
+            50% {opacity: 0.5;}
+        }
+
+
+        .top-banner {
+            background-color: rgba(26, 35, 126, 0.7);
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #4fc3f7;
+            border-radius: 45px;
+            margin-bottom: 5px;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+            height: 12vh;
+            margin: 50px auto 0px auto ;
+            width: 60vw;
+
+        }
+
+        
+        .solar-system {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .planet {
+            font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .planet:nth-child(2) { animation-delay: 0.5s; }
+        .planet:nth-child(3) { animation-delay: 1s; }
+        .planet:nth-child(4) { animation-delay: 1.5s; }
+
+
+        .container {
+            background-color: rgba(13, 31, 45, 0.7);
+            border-radius: 30px;
+            box-shadow: 0 0 30px rgba(79, 195, 247, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            margin: auto auto auto auto ;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent,
+                rgba(79, 195, 247, 0.1),
+                transparent 30%
+            );
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(1turn); }
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .content {
+            padding: 20px;
+            color: #ffffff;
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4fc3f7;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #4fc3f7;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: rgba(13, 31, 45, 0.8);
+            color: #ffffff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 18px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #81d4fa;
+            box-shadow: 0 0 10px rgba(129, 212, 250, 0.5);
+        }
+
+        button {
+            background-color: #4fc3f7;
+            color: #0d1f2d;
+            border: none;
+            padding: 10px 3px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            width: 270px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+            margin-left: 45px;
+        }
+
+        button:hover {
+            background-color: #81d4fa;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(129, 212, 250, 0.7);
+        }
+
+        button::before {
+            position: absolute;
+            top: 50%;
+            left: -30px;
+            transform: translateY(-50%);
+            font-size: 24px;
+            opacity: 0;
+            transition: left 0.5s, opacity 0.5s;
+        }
+
+        button:hover::before {
+            left: 20px;
+            opacity: 1;
+        }
+
+        #certificateContainer {
+            display: none;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 100px;
+        }
+        #certificateImage {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        #certificateText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -7px;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 30px;
+            font-weight: 500;
+            font-family: 'Dancing Script', cursive;
+        }
+        @media print {
+            @page {
+                size: landscape;
+                margin: 20px, 20px;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #certificateContainer, #certificateImage, #certificateText {
+                visibility: visible;
+            } 
+            #certificateContainer {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                page-break-after: always;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            #certificateImage {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+            }
+            #certificateText {
+                color: #fff;
+                font-size: 3vw;
+                top: 47%;
+            }
+            #printButton {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-background"></div>
+    <div class="top-banner">
+        <div>Start your Cosmic Journey with Galactic Coders!</div>
+        <div class="solar-system">
+            <span class="planet">🌎</span>
+            <span class="planet">🌕</span>
+            <span class="planet">🪐</span>
+            <span class="planet">🌠</span>
+        </div>
+    </div>
+
+    <button id="spacebutton" onclick="goToPage()">
+        <span>
+              <p>Explore Solar System</p><img class = "icon" src = "sandy.ico">
+            
+        </span>
+    </button>
+
+    <div class="space-background"></div>
+    <div class="container">
+        <div class="content-wrapper">
+            <main class="content">
+                <form id="adventureForm">
+                    <label for="name">What's your name, Astronaut?</label>
+                    <input type="text" id="name" required placeholder="Enter your name">
+
+                    <label for="age">How old are you?</label>
+                    <select id="age" required>
+                        <option value="">Select your age</option>
+                        <option value="5">5 years old</option>
+                        <option value="6">6 years old</option>
+                        <option value="7">7 years old</option>
+                        <option value="8">8 years old</option>
+                        <option value="9">9 years old</option>
+                        <option value="10">10 years old</option>
+                        <option value="11">11 years old</option>
+                        <option value="12">12 years old</option>
+                    </select>
+
+                    <button type="submit">Certificate 🎓</button>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    
+    <div id="certificateContainer">
+        <img id="certificateImage" src="certification2 copy.jpg" alt="Galactic Coder Certificate">
+        <div id="certificateText"></div>
+        <button id="printButton">Print Certificate 🎓</button>
+    </div>
+
+    <script>
+
+        // Create dynamic star background
+        const spaceBackground = document.querySelector('.space-background');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            spaceBackground.appendChild(star);
+        }
+
+        // Add shooting stars
+        setInterval(() => {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'star';
+            shootingStar.style.left = '-5px';
+            shootingStar.style.top = `${Math.random() * 100}%`;
+            shootingStar.style.width = '3px';
+            shootingStar.style.height = '3px';
+            shootingStar.style.opacity = '0';
+            shootingStar.style.transform = 'translateX(0)';
+            shootingStar.style.transition = 'all 1s linear';
+            spaceBackground.appendChild(shootingStar);
+
+            setTimeout(() => {
+                shootingStar.style.opacity = '1';
+                shootingStar.style.transform = 'translateX(calc(100vw + 5px))';
+            }, 50);
+
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 1050);
+        }, 3000);
+
+        const form = document.getElementById('adventureForm');
+        const certificateContainer = document.getElementById('certificateContainer');
+        const certificateText = document.getElementById('certificateText');
+        const printButton = document.getElementById('printButton');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+
+            // Use a single line break for smaller spacing
+            certificateText.innerHTML = `${name}<br><br>${age} years old`;
+            form.style.display = 'none';
+            certificateContainer.style.display = 'block';
+        });
+
+        printButton.addEventListener('click', function() {
+            window.print();
+        });
+
+        function goToPage() {
+            window.location.href = "/main.html";
+        }
+
+    </script>
+</body>
+</html>
