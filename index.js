@@ -18,17 +18,11 @@ const planetMenu = document.getElementById('planetMenu');
 const infoBox = document.getElementById('infoBox');
 const spacebutton = document.getElementById('spacebutton');
 const list = document.getElementById('list');
-const introVideo = document.getElementById('introVideo');
 
 document.addEventListener('DOMContentLoaded', () => {
   createStars();
   startButton.addEventListener('click', () => {
     startButton.style.display = 'none';
-    introVideo.style.display = 'block';
-    attemptPlay();
-
-    introVideo.addEventListener('ended', () => {
-      introVideo.style.display = 'none';
       loadingBar.style.display = 'block';
       loadingBar.style.opacity = '1';
       animateProgress();
@@ -37,14 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1500);
     });
   });
-});
-
-function attemptPlay() {
-  introVideo.play().catch(error => {
-    console.log("Autoplay was prevented. Please interact with the document to play the video.");
-    // You might want to show a play button here if autoplay fails
-  });
-}
 
 function createStars() {
   const numStars = 200;
